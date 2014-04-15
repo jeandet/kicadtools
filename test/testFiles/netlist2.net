@@ -1,0 +1,4 @@
+(export (version D) (design
+    (source /home/guan/boards/boiler/boiler.sch)
+    (date "Sat 12 Oct 2013 10:55:49 PM EDT")
+    (tool "eeschema (2013-mar-13)-testing")))
