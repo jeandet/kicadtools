@@ -41,8 +41,19 @@ int main(int argc, char *argv[])
             tm.start();
             NetListdriver.parseNetList(argv[1]);
             qDebug()<<"File parsed in "<<tm.elapsed()<<"ms";
-            std::cout<<NetListdriver.print().toStdString();
+            if(ap.arguments().contains("--print"))
+            {
+                std::cout<<NetListdriver.print().toStdString();
+            }
+            else
+            {
+                for(int i=0;i<NetListdriver.netlistRoot->nets.count();i++)
+                {
+                    std::cout<<"Found net:"<<NetListdriver.netlistRoot->nets.at(i)->name.value().toStdString()<<" "<<NetListdriver.netlistRoot->nets.at(i)->code.value().toStdString()<<"\n";
+                }
+            }
         }
+
     }
     return 0;
 }

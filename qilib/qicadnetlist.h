@@ -69,95 +69,35 @@ extern "C" const char* node_c        ;
 
 }
 
-class QIcadNetListLevel
-{
-public:
-    QIcadNetListLevel() {}
-    QList<QIcadNetListLevel*> sublevels;
-    QList<QIcadNet*> nets;
-};
 
-class QIcadNetListDesign
-{
-public:
-    QIcadNetListDesign(){}
-    QString source;
-    QString date;
-    QString tool;
-};
-
-class QIcadNetListComponent
-{
-public:
-    typedef struct libsource_t
-    {
-        QString lib;
-        QString part;
-    }libsource_t;
-    typedef struct sheetpath_t
-    {
-        QString names;
-        QString tstamp;
-    }sheetpath_t;
-    QIcadNetListComponent(){}
-    QString ref;
-    QString value;
-    QString tstamp;
-    libsource_t libsource;
-    sheetpath_t sheetpath;
-};
-
-class QIcadNetListLibPart
-{
-public:
-    typedef struct fields_t
-    {
-        QString ref;
-        QString value;
-        QString footprint;
-        QString datasheet;
-    }fields_t;
-    typedef struct pin_t
-    {
-        int num;
-        QString name;
-        QString type;
-    }pin_t;
-    QIcadNetListLibPart();
-    QString lib;
-    QString part;
-    QStringList footprints;
-    fields_t fields;
-    QList<pin_t*> pins;
-};
 
 class QIcadAbstractNodeWrapper
 {
 public:
     QIcadAbstractNodeWrapper(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper(){}
     ~QIcadAbstractNodeWrapper();
     QString value();
     QString value(int index);
     QString catValues();
-    void setNode(QIlib::AbstractNode* node);
     QList<QIcadAbstractNodeWrapper*> childs;
     QIcadAbstractNodeWrapper* parent;
+    virtual void setNode(QIlib::AbstractNode* node);
 
-private:
     QIlib::AbstractNode* p_node;
 };
 
-class QIcadNetListRoot : public AbstractNode
+class QIcadNetListDesign : public QIcadAbstractNodeWrapper
 {
 public:
-    QIcadNetListRoot(QIlib::AbstractNode* node);
+    QIcadNetListDesign(QIlib::AbstractNode* node);
+    QIcadNetListDesign(){}
     QIcadAbstractNodeWrapper source;
     QIcadAbstractNodeWrapper date;
     QIcadAbstractNodeWrapper tool;
-    QList<QIcadNetListComponent*> components;
-    QList<QIcadNetListLibPart*> libparts;
-    QList<QIcadNetListLibrary*> libraries;
+    void setNode(QIlib::AbstractNode* node);
 };
+
 
 
  /*
@@ -169,13 +109,32 @@ public:
 */
 class  QIcadNetListComponent:public QIcadAbstractNodeWrapper
 {
+    class QIcadNetListLibSource : QIcadAbstractNodeWrapper
+    {
+    public:
+        QIcadNetListLibSource(AbstractNode* node);
+        QIcadNetListLibSource(){}
+        QIcadAbstractNodeWrapper lib;
+        QIcadAbstractNodeWrapper part;
+        void setNode(AbstractNode* node);
+    };
+    class QIcadNetListSheetPath : QIcadAbstractNodeWrapper
+    {
+    public:
+        QIcadNetListSheetPath(AbstractNode* node);
+        QIcadNetListSheetPath(){}
+        QIcadAbstractNodeWrapper names;
+        QIcadAbstractNodeWrapper tstamps;
+        void setNode(AbstractNode* node);
+    };
 public:
      QIcadNetListComponent(AbstractNode* node);
      QIcadAbstractNodeWrapper ref;
      QIcadAbstractNodeWrapper value;
-     QIcadAbstractNodeWrapper libsource;
-     QIcadAbstractNodeWrapper sheetpath;
+     QIcadNetListLibSource libsource;
+     QIcadNetListSheetPath sheetpath;
      QIcadAbstractNodeWrapper tstamp;
+     void setNode(QIlib::AbstractNode* node);
 };
 
 
@@ -194,6 +153,7 @@ class QIcadNetListField : QIcadAbstractNodeWrapper
 public:
     QIcadNetListField(AbstractNode* node);
     QIcadAbstractNodeWrapper name;
+    void setNode(AbstractNode* node);
 };
 
 
@@ -206,11 +166,19 @@ class QIcadNetListLibPart : QIcadAbstractNodeWrapper
         QIcadAbstractNodeWrapper type;
         QIcadAbstractNodeWrapper num;
         QIcadAbstractNodeWrapper name;
+        void setNode(AbstractNode* node);
     };
 public:
     QIcadNetListLibPart(AbstractNode* node);
+    QIcadAbstractNodeWrapper lib;
+    QIcadAbstractNodeWrapper part;
     QList<QIcadNetListField*> fields;
     QList<QIcadNetListPin*> pins;
+    void setNode(AbstractNode* node);
+    void setFields(QIlib::AbstractNode* node);
+    void apendFields(QIlib::AbstractNode* node);
+    void setPins(QIlib::AbstractNode* node);
+    void apendPins(QIlib::AbstractNode* node);
 };
 
 /*
@@ -228,6 +196,8 @@ class  QIcadNetListLibrary : QIcadAbstractNodeWrapper
 public:
      QIcadNetListLibrary(AbstractNode* node);
      QIcadAbstractNodeWrapper uri;
+     QIcadAbstractNodeWrapper logical;
+     void setNode(AbstractNode* node);
 };
 /*
 (nets
@@ -248,12 +218,36 @@ class QIcadNetListNet : QIcadAbstractNodeWrapper
         QIcadNetListNetNode(AbstractNode* node);
         QIcadAbstractNodeWrapper ref;
         QIcadAbstractNodeWrapper pin;
+        void setNode(AbstractNode* node);
     };
 public:
     QIcadNetListNet(AbstractNode* node);
     QList<QIcadNetListNetNode*> NetNodes;
+    QIcadAbstractNodeWrapper code;
+    QIcadAbstractNodeWrapper name;
+    void setNode(AbstractNode* node);
+
 };
 
+class QIcadNetListRoot : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadNetListRoot(QIlib::AbstractNode* node);
+    QIcadNetListDesign design;
+    QList<QIcadNetListComponent*> components;
+    QList<QIcadNetListLibPart*> libparts;
+    QList<QIcadNetListLibrary*> libraries;
+    QList<QIcadNetListNet*> nets;
+    void setNode(QIlib::AbstractNode* node);
+    void setComponents(QIlib::AbstractNode* node);
+    void apendComponents(QIlib::AbstractNode* node);
+    void setLibParts(QIlib::AbstractNode* node);
+    void apendLibParts(QIlib::AbstractNode* node);
+    void setLibraries(QIlib::AbstractNode* node);
+    void apendLibraries(QIlib::AbstractNode* node);
+    void setNets(QIlib::AbstractNode* node);
+    void apendNets(QIlib::AbstractNode* node);
+};
 
 
 class QIcadNetList : private lispLike_Driver
@@ -263,13 +257,8 @@ public:
     bool parseNetList(const QString& netlist);
     QString toString();
     QString fileName;
-    QString version;
-    QIcadNetListDesign design;
-    QList<QIcadNetListComponent*> components;
-    QList<QIcadNetListLibPart*> libparts;
-    QIcadNetListLevel rootSheet;
     QString print();
-    QIcadAbstractNodeWrapper netlistRoot;
+    QIcadNetListRoot* netlistRoot;
 private:
     QIlib::AbstractNode* getAbstractNode(const QString& node,int index);
     QIlib::AbstractNode* getAbstractNode(QIlib::AbstractNode* rootNode,const QString& node,int* index);
