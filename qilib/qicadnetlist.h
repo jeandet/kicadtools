@@ -2,6 +2,27 @@
 #define QICADNETLIST_H
 #include <QString>
 #include <QStringList>
+/*------------------------------------------------------------------------------
+--  This file is a part of the Kicad Tools Software
+--  Copyright (C) 2014, Plasma Physics Laboratory - CNRS
+--
+--  This program is free software; you can redistribute it and/or modify
+--  it under the terms of the GNU General Public License as published by
+--  the Free Software Foundation; either version 2 of the License, or
+--  (at your option) any later version.
+--
+--  This program is distributed in the hope that it will be useful,
+--  but WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--  GNU General Public License for more details.
+--
+--  You should have received a copy of the GNU General Public License
+--  along with this program; if not, write to the Free Software
+--  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-------------------------------------------------------------------------------*/
+/*--                  Author : Alexis Jeandet
+--                     Mail : alexis.jeandet@member.fsf.org
+----------------------------------------------------------------------------*/
 #include <QList>
 #include <QFile>
 #include <parsers/lispLike_driver.h>
@@ -113,14 +134,127 @@ public:
 class QIcadAbstractNodeWrapper
 {
 public:
-    QIcadAbstractNodeWrapper();
+    QIcadAbstractNodeWrapper(QIlib::AbstractNode* node);
     ~QIcadAbstractNodeWrapper();
     QString value();
+    QString value(int index);
+    QString catValues();
+    void setNode(QIlib::AbstractNode* node);
     QList<QIcadAbstractNodeWrapper*> childs;
     QIcadAbstractNodeWrapper* parent;
+
 private:
-    QIlib::AbstractNode* node;
+    QIlib::AbstractNode* p_node;
 };
+
+class QIcadNetListRoot : public AbstractNode
+{
+public:
+    QIcadNetListRoot(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper source;
+    QIcadAbstractNodeWrapper date;
+    QIcadAbstractNodeWrapper tool;
+    QList<QIcadNetListComponent*> components;
+    QList<QIcadNetListLibPart*> libparts;
+    QList<QIcadNetListLibrary*> libraries;
+};
+
+
+ /*
+  * (comp (ref IC1)
+      (value 24L-MOD-8)
+      (libsource (lib guan) (part 24L-MOD-8))
+      (sheetpath (names /) (tstamps /))
+      (tstamp 52533BBE))
+*/
+class  QIcadNetListComponent:public QIcadAbstractNodeWrapper
+{
+public:
+     QIcadNetListComponent(AbstractNode* node);
+     QIcadAbstractNodeWrapper ref;
+     QIcadAbstractNodeWrapper value;
+     QIcadAbstractNodeWrapper libsource;
+     QIcadAbstractNodeWrapper sheetpath;
+     QIcadAbstractNodeWrapper tstamp;
+};
+
+
+/*
+(libparts
+    (libpart (lib guan) (part 24L-MOD-8)
+      (fields
+        (field (name Reference) IC)
+        (field (name Value) 24L-MOD-8))
+      (pins
+        (pin (num 1) (name GND) (type power_in))
+        (pin (num 2) (name VCC) (type power_in))
+*/
+class QIcadNetListField : QIcadAbstractNodeWrapper
+{
+public:
+    QIcadNetListField(AbstractNode* node);
+    QIcadAbstractNodeWrapper name;
+};
+
+
+class QIcadNetListLibPart : QIcadAbstractNodeWrapper
+{
+    class QIcadNetListPin : QIcadAbstractNodeWrapper
+    {
+    public:
+        QIcadNetListPin(AbstractNode* node);
+        QIcadAbstractNodeWrapper type;
+        QIcadAbstractNodeWrapper num;
+        QIcadAbstractNodeWrapper name;
+    };
+public:
+    QIcadNetListLibPart(AbstractNode* node);
+    QList<QIcadNetListField*> fields;
+    QList<QIcadNetListPin*> pins;
+};
+
+/*
+(libraries
+    (library (logical guan)
+      (uri /home/guan/boards/guan.lib))
+    (library (logical device)
+      (uri /usr/share/kicad/library/device.lib))
+    (library (logical conn)
+      (uri /usr/share/kicad/library/conn.lib)))
+*/
+
+class  QIcadNetListLibrary : QIcadAbstractNodeWrapper
+{
+public:
+     QIcadNetListLibrary(AbstractNode* node);
+     QIcadAbstractNodeWrapper uri;
+};
+/*
+(nets
+    (net (code 15) (name "")
+      (node (ref C4) (pin 1))
+      (node (ref U2) (pin 4)))
+    (net (code 16) (name GND)
+      (node (ref D1) (pin 2))
+      (node (ref C1) (pin 2))
+      (node (ref IC1) (pin 1))
+*/
+
+class QIcadNetListNet : QIcadAbstractNodeWrapper
+{
+    class QIcadNetListNetNode: QIcadAbstractNodeWrapper
+    {
+    public:
+        QIcadNetListNetNode(AbstractNode* node);
+        QIcadAbstractNodeWrapper ref;
+        QIcadAbstractNodeWrapper pin;
+    };
+public:
+    QIcadNetListNet(AbstractNode* node);
+    QList<QIcadNetListNetNode*> NetNodes;
+};
+
+
 
 class QIcadNetList : private lispLike_Driver
 {
@@ -135,6 +269,7 @@ public:
     QList<QIcadNetListLibPart*> libparts;
     QIcadNetListLevel rootSheet;
     QString print();
+    QIcadAbstractNodeWrapper netlistRoot;
 private:
     QIlib::AbstractNode* getAbstractNode(const QString& node,int index);
     QIlib::AbstractNode* getAbstractNode(QIlib::AbstractNode* rootNode,const QString& node,int* index);

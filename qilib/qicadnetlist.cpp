@@ -1,3 +1,24 @@
+/*------------------------------------------------------------------------------
+--  This file is a part of the Kicad Tools Software
+--  Copyright (C) 2014, Plasma Physics Laboratory - CNRS
+--
+--  This program is free software; you can redistribute it and/or modify
+--  it under the terms of the GNU General Public License as published by
+--  the Free Software Foundation; either version 2 of the License, or
+--  (at your option) any later version.
+--
+--  This program is distributed in the hope that it will be useful,
+--  but WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--  GNU General Public License for more details.
+--
+--  You should have received a copy of the GNU General Public License
+--  along with this program; if not, write to the Free Software
+--  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-------------------------------------------------------------------------------*/
+/*--                  Author : Alexis Jeandet
+--                     Mail : alexis.jeandet@member.fsf.org
+----------------------------------------------------------------------------*/
 #include "qicadnetlist.h"
 #include <QRegularExpression>
 
@@ -116,9 +137,9 @@ void QIlib::QIcadNetList::updateConcreteTree()
 
 
 
-QIlib::QIcadAbstractNodeWrapper::QIcadAbstractNodeWrapper()
+QIlib::QIcadAbstractNodeWrapper::QIcadAbstractNodeWrapper(AbstractNode *node)
 {
-
+    this->p_node = node;
 }
 
 QIlib::QIcadAbstractNodeWrapper::~QIcadAbstractNodeWrapper()
@@ -129,4 +150,51 @@ QIlib::QIcadAbstractNodeWrapper::~QIcadAbstractNodeWrapper()
         if(this->childs.at(i))
             delete this->childs.at(i);
     }
+}
+
+QString QIlib::QIcadAbstractNodeWrapper::value()
+{
+    if((p_node->Values.count()>0) && p_node)
+        return p_node->Values.at(0);
+    return QString("");
+}
+
+QString QIlib::QIcadAbstractNodeWrapper::value(int index)
+{
+    if((p_node->Values.count()>index) && p_node)
+        return p_node->Values.at(index);
+    return QString("");
+}
+
+QString QIlib::QIcadAbstractNodeWrapper::catValues()
+{
+    if(p_node)
+    {
+        QString result("");
+        for(int i=0;i<p_node->Values.count();i++)
+        {
+            result.append(p_node->Values.at(i));
+        }
+        return result;
+    }
+}
+
+void QIlib::QIcadAbstractNodeWrapper::setNode(QIlib::AbstractNode *node)
+{
+    this->p_node = node;
+}
+
+
+
+QIlib::QIcadNetListRoot::QIcadNetListRoot(QIlib::AbstractNode *node)
+    :QIcadAbstractNodeWrapper(node)
+{
+
+}
+
+
+QIlib::QIcadNetListComponent::QIcadNetListComponent(QIlib::AbstractNode *node)
+    :QIcadAbstractNodeWrapper(node)
+{
+
 }
