@@ -38,7 +38,7 @@ typedef QIlib::lispLike_Parser::token token;
                                     return( token::VALUE );
                                 }
 
-\([a-zA-Z0-9]+                  {
+\([a-zA-Z0-9\_]+                  {
                                     yylval->sval = STOKEN( yytext );
                                     return( token::NODE );
                                 }

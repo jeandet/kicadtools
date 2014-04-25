@@ -35,7 +35,8 @@ target.path = $$[QT_INSTALL_LIBS]
 qilibHeaders.path = $$[QT_INSTALL_HEADERS]/QIlib
 qilibHeaders.files = \
     qicadnetlist.h \
-    qicadnet.h \
+    qicadpcb.h  \
+    qicadlisplikelexique.h
 
 qilibParsersHeaders.path = $$[QT_INSTALL_HEADERS]/QIlib/parsers
 qilibParsersHeaders.files = \
@@ -49,16 +50,18 @@ INCLUDEPATH += ./parsers
 
 SOURCES += \
     qicadnetlist.cpp \
-    qicadnet.cpp \
     parsers/lispLike_driver.cpp \
-    parsers/lispLike_scanner.cpp
+    parsers/lispLike_scanner.cpp \
+    qicadpcb.cpp \
+    qicadlisplikelexique.cpp
 
 
 HEADERS  += \
     qicadnetlist.h \
-    qicadnet.h \
     parsers/lispLike_driver.h \
-    parsers/lispLike_scanner.h
+    parsers/lispLike_scanner.h \
+    qicadpcb.h \
+    qicadlisplikelexique.h
 
 OTHER_FILES += qilib.prf
 

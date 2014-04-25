@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QApplication>
 #include <qicadnetlist.h>
+#include <qicadpcb.h>
 #include <QDebug>
 #include <QTime>
 /*
@@ -32,24 +33,45 @@
 int main(int argc, char *argv[])
 {
     QApplication ap(argc,argv);
-    QIlib::QIcadNetList NetListdriver;
     if(argc>1)
     {
         if(QFile::exists(argv[1]))
         {
             QTime tm;
-            tm.start();
-            NetListdriver.parseNetList(argv[1]);
-            qDebug()<<"File parsed in "<<tm.elapsed()<<"ms";
-            if(ap.arguments().contains("--print"))
+            if(ap.arguments().contains("--netList"))
             {
-                std::cout<<NetListdriver.print().toStdString();
+                QIlib::QIcadNetList NetListdriver;
+                tm.start();
+                NetListdriver.parseNetList(argv[1]);
+                qDebug()<<"File parsed in "<<tm.elapsed()<<"ms";
+                if(ap.arguments().contains("--print"))
+                {
+                    std::cout<<NetListdriver.print().toStdString();
+                }
+                else
+                {
+                    for(int i=0;i<NetListdriver.netlistRoot->nets.count();i++)
+                    {
+                        std::cout<<"Found net:"<<NetListdriver.netlistRoot->nets.at(i)->name.value().toStdString()<<" "<<NetListdriver.netlistRoot->nets.at(i)->code.value().toStdString()<<"\n";
+                    }
+                }
             }
             else
             {
-                for(int i=0;i<NetListdriver.netlistRoot->nets.count();i++)
+                QIlib::QIcadPcb pcbDriver;
+                tm.start();
+                pcbDriver.parsePcb(argv[1]);
+                qDebug()<<"File parsed in "<<tm.elapsed()<<"ms";
+                if(ap.arguments().contains("--print"))
                 {
-                    std::cout<<"Found net:"<<NetListdriver.netlistRoot->nets.at(i)->name.value().toStdString()<<" "<<NetListdriver.netlistRoot->nets.at(i)->code.value().toStdString()<<"\n";
+                    std::cout<<pcbDriver.print().toStdString();
+                }
+                else
+                {
+//                    for(int i=0;i<NetListdriver.netlistRoot->nets.count();i++)
+//                    {
+//                        std::cout<<"Found net:"<<NetListdriver.netlistRoot->nets.at(i)->name.value().toStdString()<<" "<<NetListdriver.netlistRoot->nets.at(i)->code.value().toStdString()<<"\n";
+//                    }
                 }
             }
         }

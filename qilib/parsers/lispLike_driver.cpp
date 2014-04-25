@@ -23,6 +23,54 @@
 #include "lispLike_driver.h"
 #include<assert.h>
 
+
+QIlib::QIcadAbstractNodeWrapper::QIcadAbstractNodeWrapper(AbstractNode *node)
+{
+    this->p_node = node;
+}
+
+QIlib::QIcadAbstractNodeWrapper::~QIcadAbstractNodeWrapper()
+{
+    /*First delete all the childs*/
+    for(int i=0;i<this->childs.count();i++)
+    {
+        if(this->childs.at(i))
+            delete this->childs.at(i);
+    }
+}
+
+QString QIlib::QIcadAbstractNodeWrapper::value()
+{
+    if((p_node->Values.count()>0) && p_node)
+        return p_node->Values.at(0);
+    return QString("");
+}
+
+QString QIlib::QIcadAbstractNodeWrapper::value(int index)
+{
+    if((p_node->Values.count()>index) && p_node)
+        return p_node->Values.at(index);
+    return QString("");
+}
+
+QString QIlib::QIcadAbstractNodeWrapper::catValues()
+{
+    if(p_node)
+    {
+        QString result("");
+        for(int i=0;i<p_node->Values.count();i++)
+        {
+            result.append(p_node->Values.at(i));
+        }
+        return result;
+    }
+}
+
+void QIlib::QIcadAbstractNodeWrapper::setNode(QIlib::AbstractNode *node)
+{
+    this->p_node = node;
+}
+
 QIlib::lispLike_Driver::lispLike_Driver()
     :parser( NULL ),scanner( NULL )
 {

@@ -46,6 +46,22 @@ public:
     QIlib::AbstractNode* parent;
 };
 
+class QIcadAbstractNodeWrapper
+{
+public:
+    QIcadAbstractNodeWrapper(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper(){}
+    ~QIcadAbstractNodeWrapper();
+    QString value();
+    QString value(int index);
+    QString catValues();
+    QList<QIcadAbstractNodeWrapper*> childs;
+    QIcadAbstractNodeWrapper* parent;
+    virtual void setNode(QIlib::AbstractNode* node);
+
+    QIlib::AbstractNode* p_node;
+};
+
 class lispLike_Driver
 {
 public:

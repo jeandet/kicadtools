@@ -23,41 +23,6 @@
 #include <QRegularExpression>
 
 
-const char* root_c                 ="(export";
-const char* version_c              ="(version";
-const char* design_c               ="(design";
-const char* source_c               ="(source";
-const char* date_c                 ="(date";
-const char* tool_c                 ="(tool";
-const char* components_c           ="(components";
-const char* component_c            ="(comp";
-const char* ref_c                  ="(ref";
-const char* value_c                ="(value";
-const char* libsource_c            ="(libsource";
-const char* lib_c                  ="(lib";
-const char* part_c                 ="(part";
-const char* sheetpath_c            ="(sheetpath";
-const char* names_c                ="(names";
-const char* tstamps_c              ="(tstamps";
-const char* tstamp_c               ="(tstamp";
-const char* libparts_c             ="(libparts";
-const char* libpart_c              ="(libpart";
-const char* fields_c               ="(fields";
-const char* field_c                ="(field";
-const char* name_c                 ="(name";
-const char* pins_c                 ="(pins";
-const char* pin_c                  ="(pin";
-const char* num_c                  ="(num";
-const char* type_c                 ="(type";
-const char* libraries_c            ="(libraries";
-const char* library_c              ="(library";
-const char* logical_c              ="(logical";
-const char* uri_c                  ="(uri";
-const char* nets_c                 ="(nets";
-const char* net_c                  ="(net";
-const char* code_c                 ="(code";
-const char* node_c                 ="(node";
-
 
 QIlib::QIcadNetList::QIcadNetList()
     :netlistRoot(NULL)
@@ -113,7 +78,7 @@ void QIlib::QIcadNetList::updateConcreteTree()
 {
     if(this->rootNode.nodes.count())
     {
-        if(this->rootNode.nodes.at(0)->name==QIlib::Lexique::root_c)
+        if(this->rootNode.nodes.at(0)->name==QIlib::Lexique::export_c)
         {
             if(this->netlistRoot==NULL)
             {
@@ -125,52 +90,6 @@ void QIlib::QIcadNetList::updateConcreteTree()
 
 
 
-QIlib::QIcadAbstractNodeWrapper::QIcadAbstractNodeWrapper(AbstractNode *node)
-{
-    this->p_node = node;
-}
-
-QIlib::QIcadAbstractNodeWrapper::~QIcadAbstractNodeWrapper()
-{
-    /*First delete all the childs*/
-    for(int i=0;i<this->childs.count();i++)
-    {
-        if(this->childs.at(i))
-            delete this->childs.at(i);
-    }
-}
-
-QString QIlib::QIcadAbstractNodeWrapper::value()
-{
-    if((p_node->Values.count()>0) && p_node)
-        return p_node->Values.at(0);
-    return QString("");
-}
-
-QString QIlib::QIcadAbstractNodeWrapper::value(int index)
-{
-    if((p_node->Values.count()>index) && p_node)
-        return p_node->Values.at(index);
-    return QString("");
-}
-
-QString QIlib::QIcadAbstractNodeWrapper::catValues()
-{
-    if(p_node)
-    {
-        QString result("");
-        for(int i=0;i<p_node->Values.count();i++)
-        {
-            result.append(p_node->Values.at(i));
-        }
-        return result;
-    }
-}
-
-void QIlib::QIcadAbstractNodeWrapper::setNode(QIlib::AbstractNode *node)
-{
-    this->p_node = node;
-}
 
 
 
@@ -183,7 +102,7 @@ QIlib::QIcadNetListRoot::QIcadNetListRoot(QIlib::AbstractNode *node)
 void QIlib::QIcadNetListRoot::setNode(QIlib::AbstractNode *node)
 {
     this->p_node = node;
-    if(node->name==QIlib::Lexique::root_c)
+    if(node->name==QIlib::Lexique::export_c)
     {
         for(int i=0;i<node->nodes.count();i++)
         {

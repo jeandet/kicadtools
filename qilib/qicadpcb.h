@@ -19,20 +19,38 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "qicadnet.h"
+#ifndef QICADPCB_H
+#define QICADPCB_H
+#include <QString>
+#include <QStringList>
+#include <QList>
+#include <QFile>
+#include <parsers/lispLike_driver.h>
+#include <qicadlisplikelexique.h>
 
-QIlib::QIcadNet::QIcadNet()
+namespace QIlib{
+
+class QIcadPcbRoot : public QIcadAbstractNodeWrapper
 {
-}
+public:
+    QIcadPcbRoot(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper version;
+    QIcadAbstractNodeWrapper host;
+    void setNode(QIlib::AbstractNode* node);
+};
 
-QIlib::QIcadNet::~QIcadNet()
+class QIcadPcb : private lispLike_Driver
 {
+public:
+    QIcadPcb();
+    bool parsePcb(const QString& pcb);
+    QString toString();
+    QString fileName;
+    QString print();
+private:
+    void updateConcreteTree();
+};
+
 
 }
-
-
-QIlib::QIcadNetNode::QIcadNetNode(QString ref, QString node)
-{
-    this->p_ref = ref;
-    this->p_node = node;
-}
+#endif // QICADPCB_H

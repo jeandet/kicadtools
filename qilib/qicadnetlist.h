@@ -1,7 +1,3 @@
-#ifndef QICADNETLIST_H
-#define QICADNETLIST_H
-#include <QString>
-#include <QStringList>
 /*------------------------------------------------------------------------------
 --  This file is a part of the Kicad Tools Software
 --  Copyright (C) 2014, Plasma Physics Laboratory - CNRS
@@ -23,69 +19,18 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
+#ifndef QICADNETLIST_H
+#define QICADNETLIST_H
+#include <QString>
+#include <QStringList>
 #include <QList>
 #include <QFile>
 #include <parsers/lispLike_driver.h>
-#include <qicadnet.h>
+#include <qicadlisplikelexique.h>
 
 namespace QIlib{
 
-namespace Lexique
-{
-extern "C" const char* root_c       ;
-extern "C" const char* version_c     ;
-extern "C" const char* design_c      ;
-extern "C" const char* source_c      ;
-extern "C" const char* date_c        ;
-extern "C" const char* tool_c        ;
-extern "C" const char* components_c  ;
-extern "C" const char* component_c   ;
-extern "C" const char* ref_c         ;
-extern "C" const char* value_c       ;
-extern "C" const char* libsource_c   ;
-extern "C" const char* lib_c         ;
-extern "C" const char* part_c        ;
-extern "C" const char* sheetpath_c   ;
-extern "C" const char* names_c       ;
-extern "C" const char* tstamps_c     ;
-extern "C" const char* tstamp_c      ;
-extern "C" const char* libparts_c    ;
-extern "C" const char* libpart_c     ;
-extern "C" const char* fields_c      ;
-extern "C" const char* field_c       ;
-extern "C" const char* name_c        ;
-extern "C" const char* pins_c        ;
-extern "C" const char* pin_c         ;
-extern "C" const char* num_c         ;
-extern "C" const char* type_c        ;
-extern "C" const char* libraries_c   ;
-extern "C" const char* library_c     ;
-extern "C" const char* logical_c     ;
-extern "C" const char* uri_c         ;
-extern "C" const char* nets_c        ;
-extern "C" const char* net_c         ;
-extern "C" const char* code_c        ;
-extern "C" const char* node_c        ;
 
-}
-
-
-
-class QIcadAbstractNodeWrapper
-{
-public:
-    QIcadAbstractNodeWrapper(QIlib::AbstractNode* node);
-    QIcadAbstractNodeWrapper(){}
-    ~QIcadAbstractNodeWrapper();
-    QString value();
-    QString value(int index);
-    QString catValues();
-    QList<QIcadAbstractNodeWrapper*> childs;
-    QIcadAbstractNodeWrapper* parent;
-    virtual void setNode(QIlib::AbstractNode* node);
-
-    QIlib::AbstractNode* p_node;
-};
 
 class QIcadNetListDesign : public QIcadAbstractNodeWrapper
 {
@@ -255,7 +200,7 @@ class QIcadNetList : private lispLike_Driver
 public:
     QIcadNetList();
     bool parseNetList(const QString& netlist);
-    QString toString();
+//    QString toString();
     QString fileName;
     QString print();
     QIcadNetListRoot* netlistRoot;
