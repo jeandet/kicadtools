@@ -49,6 +49,7 @@ const char*    hpglpendiameter_c  =  "(hpglpendiameter";
 const char*    hpglpennumber_c  =  "(hpglpennumber";
 const char*    hpglpenoverlay_c  =  "(hpglpenoverlay";
 const char*    hpglpenspeed_c  =  "(hpglpenspeed";
+const char*    kicad_pcb_c  =  "(kicad_pcb";
 const char*    last_trace_width_c  =  "(last_trace_width";
 const char*    layers_c  =  "(layers";
 const char*    layerselection_c  =  "(layerselection";

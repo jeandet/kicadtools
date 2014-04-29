@@ -59,6 +59,7 @@ extern "C" const char*   hpglpendiameter_c;
 extern "C" const char*   hpglpennumber_c;
 extern "C" const char*   hpglpenoverlay_c;
 extern "C" const char*   hpglpenspeed_c;
+extern "C" const char*   kicad_pcb_c;
 extern "C" const char*   last_trace_width_c;
 extern "C" const char*   layers_c;
 extern "C" const char*   layerselection_c;

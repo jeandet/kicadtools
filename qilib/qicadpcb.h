@@ -30,12 +30,23 @@
 
 namespace QIlib{
 
+
+class QIcadPcbGeneralInfo : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbGeneralInfo(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper version;
+    QIcadAbstractNodeWrapper host;
+    void setNode(QIlib::AbstractNode* node);
+};
+
 class QIcadPcbRoot : public QIcadAbstractNodeWrapper
 {
 public:
     QIcadPcbRoot(QIlib::AbstractNode* node);
     QIcadAbstractNodeWrapper version;
     QIcadAbstractNodeWrapper host;
+    QIcadAbstractNodeWrapper page;
     void setNode(QIlib::AbstractNode* node);
 };
 
