@@ -30,13 +30,154 @@
 
 namespace QIlib{
 
+class QIcadPcbPlotParams : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbPlotParams(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper layerselection;
+    QIcadAbstractNodeWrapper usegerberextensions;
+    QIcadAbstractNodeWrapper excludeedgelayer;
+    QIcadAbstractNodeWrapper linewidth;
+    QIcadAbstractNodeWrapper plotframeref;
+    QIcadAbstractNodeWrapper viasonmask;
+    QIcadAbstractNodeWrapper mode;
+    QIcadAbstractNodeWrapper useauxorigin;
+    QIcadAbstractNodeWrapper hpglpennumber;
+    QIcadAbstractNodeWrapper hpglpenspeed;
+    QIcadAbstractNodeWrapper hpglpendiameter;
+    QIcadAbstractNodeWrapper hpglpenoverlay;
+    QIcadAbstractNodeWrapper psnegative;
+    QIcadAbstractNodeWrapper psa4output;
+    QIcadAbstractNodeWrapper plotreference;
+    QIcadAbstractNodeWrapper plotvalue;
+    QIcadAbstractNodeWrapper layerselection;
+    QIcadAbstractNodeWrapper plotothertext;
+    QIcadAbstractNodeWrapper plotinvisibletext;
+    QIcadAbstractNodeWrapper padsonsilk;
+    QIcadAbstractNodeWrapper subtractmaskfromsilk;
+    QIcadAbstractNodeWrapper outputformat;
+    QIcadAbstractNodeWrapper mirror;
+    QIcadAbstractNodeWrapper drillshape;
+    QIcadAbstractNodeWrapper scaleselection;
+    QIcadAbstractNodeWrapper outputdirectory;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+class QIcadPcbSetup : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbSetup(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper last_trace_width;
+    QIcadAbstractNodeWrapper trace_clearance;
+    QIcadAbstractNodeWrapper zone_clearance;
+    QIcadAbstractNodeWrapper zone_45_only;
+    QIcadAbstractNodeWrapper trace_min;
+    QIcadAbstractNodeWrapper segment_width;
+    QIcadAbstractNodeWrapper edge_width;
+    QIcadAbstractNodeWrapper via_size;
+    QIcadAbstractNodeWrapper via_dril;
+    QIcadAbstractNodeWrapper via_min_size;
+    QIcadAbstractNodeWrapper via_min_drill;
+    QIcadAbstractNodeWrapper uvia_size;
+    QIcadAbstractNodeWrapper uvia_drill;
+    QIcadAbstractNodeWrapper uvias_allowed;
+    QIcadAbstractNodeWrapper uvia_min_size;
+    QIcadAbstractNodeWrapper uvia_min_drill;
+    QIcadAbstractNodeWrapper pcb_text_width;
+    QIcadAbstractNodeWrapper pcb_text_size;
+    QIcadAbstractNodeWrapper mod_edge_width;
+    QIcadAbstractNodeWrapper mod_text_size;
+    QIcadAbstractNodeWrapper mod_text_width;
+    QIcadAbstractNodeWrapper pad_size;
+    QIcadAbstractNodeWrapper pad_drill;
+    QIcadAbstractNodeWrapper pad_to_mask_clearance;
+    QIcadAbstractNodeWrapper aux_axis_origin;
+    QIcadAbstractNodeWrapper visible_elements;
+    QIcadPcbPlotParams plotParams;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+
+class QIcadPcbNetClass : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbNetClass(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper clearance;
+    QIcadAbstractNodeWrapper trace_width;
+    QIcadAbstractNodeWrapper via_dia;
+    QIcadAbstractNodeWrapper via_drill;
+    QIcadAbstractNodeWrapper uvia_dia;
+    QIcadAbstractNodeWrapper uvia_drill;
+    QList<QIcadAbstractNodeWrapper> nets;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+class QIcadPcbFpTextEffectsFont : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbFpTextEffectsFont(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper size;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+class QIcadPcbFpTextEffects : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbFpTextEffects(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper font;
+    QIcadAbstractNodeWrapper thickness;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+class QIcadPcbFpText : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbFpText(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper at;
+    QIcadAbstractNodeWrapper layer;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+
+class QIcadPcbModule : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbModule(QIlib::AbstractNode* node);
+    QIcadAbstractNodeWrapper layer;
+    QIcadAbstractNodeWrapper tedit;
+    QIcadAbstractNodeWrapper tstamp;
+    QIcadAbstractNodeWrapper at;
+    QIcadAbstractNodeWrapper descr;
+    QIcadAbstractNodeWrapper tags;
+    QIcadAbstractNodeWrapper path;
+    QIcadAbstractNodeWrapper attr;
+    QList<QIcadAbstractNodeWrapper> fp_texts;
+    QList<QIcadAbstractNodeWrapper> fp_lines;
+    QList<QIcadAbstractNodeWrapper> pads;
+    void setNode(QIlib::AbstractNode* node);
+};
+
+class QIcadPcbLayers : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbLayers(QIlib::AbstractNode* node);
+    QList<QIcadAbstractNodeWrapper> layers;
+    void setNode(QIlib::AbstractNode* node);
+};
 
 class QIcadPcbGeneralInfo : public QIcadAbstractNodeWrapper
 {
 public:
     QIcadPcbGeneralInfo(QIlib::AbstractNode* node);
-    QIcadAbstractNodeWrapper version;
-    QIcadAbstractNodeWrapper host;
+    QIcadAbstractNodeWrapper links;
+    QIcadAbstractNodeWrapper no_connections;
+    QIcadAbstractNodeWrapper area;
+    QIcadAbstractNodeWrapper thickness;
+    QIcadAbstractNodeWrapper drawings;
+    QIcadAbstractNodeWrapper tracks;
+    QIcadAbstractNodeWrapper zones;
+    QIcadAbstractNodeWrapper modules;
+    QIcadAbstractNodeWrapper nets;
     void setNode(QIlib::AbstractNode* node);
 };
 
@@ -47,6 +188,10 @@ public:
     QIcadAbstractNodeWrapper version;
     QIcadAbstractNodeWrapper host;
     QIcadAbstractNodeWrapper page;
+    QIcadPcbGeneralInfo general;
+    QIcadPcbLayers layers;
+    QIcadPcbSetup setup;
+    QList<QIcadAbstractNodeWrapper> nets;
     void setNode(QIlib::AbstractNode* node);
 };
 
