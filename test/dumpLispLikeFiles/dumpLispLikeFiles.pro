@@ -8,9 +8,13 @@ TEMPLATE = app
 MOC_DIR      = moc
 RCC_DIR      = resources
 OBJECTS_DIR  = obj
-DESTDIR      = bin
+DESTDIR      = ../../bin
 
 SOURCES += main.cpp
+
+INCLUDEPATH += ../../qilib $${DESTDIR}/../qilib/
+
+LIBS += -L../../bin -lQIlib
 
 FILESTOCOPY.files += \
     $${PWD}/../testFiles/netlist1.net \

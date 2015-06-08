@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
                 QIlib::QIcadNetList NetListdriver;
                 tm.start();
                 NetListdriver.parseNetList(argv[1]);
-                qDebug()<<"File parsed in "<<tm.elapsed()<<"ms";
+                std::cout<<"File parsed in "<<tm.elapsed()<<"ms\n";
                 if(ap.arguments().contains("--print"))
                 {
                     std::cout<<NetListdriver.print().toStdString();
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
                 QIlib::QIcadPcb pcbDriver;
                 tm.start();
                 pcbDriver.parsePcb(argv[1]);
-                qDebug()<<"File parsed in "<<tm.elapsed()<<"ms";
+                std::cout<<"File parsed in "<<tm.elapsed()<<"ms\n";
                 if(ap.arguments().contains("--print"))
                 {
                     std::cout<<pcbDriver.print().toStdString();

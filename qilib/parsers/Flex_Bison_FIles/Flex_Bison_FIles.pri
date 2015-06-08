@@ -32,10 +32,10 @@ BISONSOURCES += \
 
 lispLikeHeaders.path = $$[QT_INSTALL_HEADERS]/QIlib/lispLike
 lispLikeHeaders.files = \
-    $${DESTDIR}/../lispLike/lispLike.hpp \
-    $${DESTDIR}/../lispLike/location.hh \
-    $${DESTDIR}/../lispLike/position.hh  \
-    $${DESTDIR}/../lispLike/stack.hh
+    $${DESTDIR}/qilib/lispLike/lispLike.hpp \
+    $${DESTDIR}/qilib/lispLike/location.hh \
+    $${DESTDIR}/qilib/lispLike/position.hh  \
+    $${DESTDIR}/qilib/lispLike/stack.hh
 
 INCLUDEPATH += $${DESTDIR}/..
 INSTALLS += lispLikeHeaders

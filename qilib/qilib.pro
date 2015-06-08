@@ -22,7 +22,7 @@ LIBS += -lfl
 MOC_DIR      = moc
 RCC_DIR      = resources
 OBJECTS_DIR  = obj
-DESTDIR      = lib
+DESTDIR      = ../bin
 
 include ( ./parsers/Flex_Bison_FIles/Flex_Bison_FIles.pri )
 

@@ -19,7 +19,7 @@ typedef QIlib::lispLike_Parser::token token;
 #define YY_NO_UNISTD_H
 %}
 
-%option debug
+/*%option debug*/
 %option nodefault
 %option yyclass="lispLike_Scanner"
 %option noyywrap

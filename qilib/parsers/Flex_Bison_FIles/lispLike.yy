@@ -1,6 +1,6 @@
 %skeleton "lalr1.cc"
 //%require  "3.0"
-%debug
+//%debug
 %defines
 %define namespace "QIlib"
 %define parser_class_name "lispLike_Parser"
@@ -60,9 +60,9 @@ PartNode
 %%
 
 
-void  QIlib::lispLike_Parser::error(const location_type& loc, const std::string &err_message )
+void  QIlib::lispLike_Parser::error(const std::string& error)
 {
-   std::cerr << "Error: " << err_message << "\n";
+   std::cerr << "Error: " << error << "\n";
 }
 
 
