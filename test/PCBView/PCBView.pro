@@ -17,7 +17,8 @@ RCC_DIR      = resources
 OBJECTS_DIR  = obj
 DESTDIR      = ../../bin
 
-INCLUDEPATH += ../../qilib $${DESTDIR}/../qilib/  $${DESTDIR}/../qilib/lispLike/
+INCLUDEPATH += $$top_builddir/../../qilib \
+                    $$top_srcdir/../../qilib
 
 LIBS += -L../../bin -lQIlib
 

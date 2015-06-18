@@ -12,8 +12,8 @@ DESTDIR      = ../../bin
 
 SOURCES += main.cpp
 
-INCLUDEPATH += ../../bin/../../qilib \
-                    ../../qilib
+INCLUDEPATH += $$top_builddir/../../qilib \
+                    $$top_srcdir/../../qilib
 
 message("top_builddir" $$top_builddir)
 message("top_srcdir" $$top_srcdir)
