@@ -38,6 +38,7 @@ PCBVia::PCBVia(QIlib::QIcadPcbVia *viaNode, QPointF offset, PCBContext *context)
 void PCBVia::init(QPointF offset)
 {
     this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    this->setFlags(ItemIsMovable|ItemIsSelectable|ItemIsFocusable);
     offset-=QPointF(this->viaNode->size().width()/2,this->viaNode->size().height()/2);
 
     for(int i=0;i<this->viaNode->layers().count();i++)
