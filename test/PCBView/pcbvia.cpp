@@ -45,13 +45,15 @@ void PCBVia::init(QPointF offset)
     {
         QGraphicsEllipseItem* ellipse = new QGraphicsEllipseItem();
         QPen pen = ellipse->pen();
-        pen.setWidthF(0.01);
+        double thickness = (this->viaNode->size().width()-this->viaNode->drill())/2;
+        pen.setWidthF(thickness);
+
         ellipse->setPen(pen);
-        QBrush brush = ellipse->brush();
-        brush.setStyle(Qt::SolidPattern);
-        brush.setColor(context->layerColor(this->viaNode->layers().at(i)));
-        ellipse->setBrush(brush);
-        QRectF rec(this->viaNode->pos()+offset,this->viaNode->size());
+//        QBrush brush = ellipse->brush();
+//        brush.setStyle(Qt::SolidPattern);
+//        brush.setColor(context->layerColor(this->viaNode->layers().at(i)));
+//        ellipse->setBrush(brush);
+        QRectF rec(this->viaNode->pos()+offset,QSizeF(this->viaNode->size().width()-thickness,this->viaNode->size().width()-thickness));
         ellipse->setRect(rec);
         ellipse->setZValue(-context->layer(viaNode->layers().at(i)));
         this->addToGroup(ellipse);

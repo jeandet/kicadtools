@@ -241,7 +241,7 @@ void QIlib::QIcadPcbRoot::apendVia(QIlib::AbstractNode *node)
 {
     if(node->name==QIlib::Lexique::via_c)
     {
-        this->vias.append(new QIcadPcbVia(node));
+        this->vias.append(new QIcadPcbVia(node,this->setup.defaultViaDrillSize()));
     }
 }
 
@@ -749,7 +749,18 @@ QIlib::QIcadPcbSetup::QIcadPcbSetup(QIlib::AbstractNode *node)
 
 void QIlib::QIcadPcbSetup::setNode(QIlib::AbstractNode *node)
 {
-    this->p_node = node;
+    if(node->name==QIlib::Lexique::setup_c)
+    {
+        this->p_node = node;
+        for(int i=0;i<node->nodes.count();i++)
+        {
+            if(node->nodes.at(i)->name==QIlib::Lexique::via_drill_c)
+            {
+                this->via_dril.setNode(node->nodes.at(i));
+                this->p_defaultViaDrillSize = nodeValueToDouble(node->nodes.at(i));
+            }
+        }
+    }
 }
 
 
@@ -807,8 +818,8 @@ void QIlib::QIcadPcbSegment::setNode(QIlib::AbstractNode *node)
 }
 
 
-QIlib::QIcadPcbVia::QIcadPcbVia(QIlib::AbstractNode *node)
-    :QIcadAbstractNodeWrapper(node)
+QIlib::QIcadPcbVia::QIcadPcbVia(QIlib::AbstractNode *node, double defaultDrill)
+    :QIcadAbstractNodeWrapper(node),p_drill(defaultDrill)
 {
     this->setNode(node);
 }
@@ -828,7 +839,7 @@ void QIlib::QIcadPcbVia::setNode(QIlib::AbstractNode *node)
             if(node->nodes.at(i)->name==QIlib::Lexique::size_c)
             {
                 this->sizeNode.setNode(node->nodes.at(i));
-                p_size = nodeTo2DSize(node->nodes.at(i));
+                p_size = QSizeF(nodeValueToDouble(node->nodes.at(i)),nodeValueToDouble(node->nodes.at(i)));
             }
             if(node->nodes.at(i)->name==QIlib::Lexique::drill_c)
             {

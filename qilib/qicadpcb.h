@@ -141,6 +141,9 @@ public:
     QIcadAbstractNodeWrapper visible_elements;
     QIcadPcbPlotParams plotParams;
     void setNode(QIlib::AbstractNode* node);
+    double defaultViaDrillSize(){return p_defaultViaDrillSize;}
+private:
+    double p_defaultViaDrillSize;
 };
 
 class QIcadPcbNetClass : public QIcadAbstractNodeWrapper
@@ -319,7 +322,7 @@ public:
 class QIcadPcbVia : public QIcadAbstractNodeWrapper
 {
 public:
-    QIcadPcbVia(QIlib::AbstractNode* node);
+    QIcadPcbVia(QIlib::AbstractNode* node, double defaultDrill=0);
     QIcadPcbVia(){}
     QIcadAbstractNodeWrapper at;
     QIcadAbstractNodeWrapper sizeNode;
