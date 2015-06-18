@@ -2,8 +2,8 @@
 //%require  "3.0"
 //%debug
 %defines
-%define namespace "QIlib"
-%define parser_class_name "lispLike_Parser"
+%define api.namespace {QIlib}
+%define parser_class_name {lispLike_Parser}
 
 %code requires{ 
    #include <QString>

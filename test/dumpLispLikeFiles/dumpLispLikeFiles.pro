@@ -19,7 +19,9 @@ LIBS += -L../../bin -lQIlib
 FILESTOCOPY.files += \
     $${PWD}/../testFiles/netlist1.net \
     $${PWD}/../testFiles/netlist2.net \
-    $${PWD}/../testFiles/pcb1.kicad_pcb
+    $${PWD}/../testFiles/pcb1.kicad_pcb\
+    $${PWD}/../testFiles/pcb2.kicad_pcb\
+    $${PWD}/../testFiles/pcb3.kicad_pcb
 
 FILESTOCOPY.path = $${DESTDIR}
 
