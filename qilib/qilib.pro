@@ -46,7 +46,7 @@ qilibParsersHeaders.files = \
 
 INSTALLS += target qilibHeaders qilibParsersHeaders qilibcfg
 
-INCLUDEPATH += ./parsers
+INCLUDEPATH += ./qilib/lispLike ./parsers
 
 SOURCES += \
     qicadnetlist.cpp \
