@@ -45,13 +45,16 @@ public:
 
 public slots:
     void redraw();
+    void openFile();
 protected:
     void changeEvent(QEvent *e);
 
 private:
+    void loadFile(const QString& file);
     Ui::MainWindow *ui;
     QGraphicsScene* p_scene;
     PCBContext* context;
+    QIlib::QIcadPcb* pcbDriver;
 };
 
 #endif // MAINWINDOW_H

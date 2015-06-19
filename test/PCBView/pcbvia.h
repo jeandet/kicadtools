@@ -27,6 +27,7 @@
 #include <QGraphicsItemGroup>
 #include <pcbcontext.h>
 #include <qicadpcb.h>
+#include <QPainterPath>
 
 class PCBVia: public QGraphicsItemGroup
 {
@@ -41,6 +42,7 @@ private:
     QRectF size;
     QList<int> layers;
     PCBContext* context;
+    QPainterPath path;
 };
 
 #endif // PCBVIA_H

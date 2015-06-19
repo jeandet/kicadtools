@@ -886,7 +886,7 @@ void QIlib::QIcadPcbPad::setNode(QIlib::AbstractNode *node)
                 {
                     this->p_shape = circle;
                 }
-
+            this->p_padNumber = nodeValueToInt(node,0);
         }
         for(int i=0;i<node->nodes.count();i++)
         {
@@ -894,6 +894,7 @@ void QIlib::QIcadPcbPad::setNode(QIlib::AbstractNode *node)
             {
                 this->at.setNode(node->nodes.at(i));
                 this->p_pos = nodeTo2DCoords(node->nodes.at(i));
+                this->p_angle = nodeValueToDouble(node->nodes.at(i),2);
             }
             if(node->nodes.at(i)->name==QIlib::Lexique::size_c)
             {

@@ -24,6 +24,7 @@
 #include "pcbmodule.h"
 #include "pcbline.h"
 #include "pcbvia.h"
+#include <QFileDialog>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -32,36 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->p_scene = new QGraphicsScene();
-    this->p_scene->setSceneRect(0, 0, 500, 200);
-
     this->context = new PCBContext();
     this->ui->graphicsView->setScene(this->p_scene);
-    QIlib::QIcadPcb pcbDriver;
-//    pcbDriver.parsePcb("/opt/kicadTools/test/testFiles/pcb2.kicad_pcb");
-//    pcbDriver.parsePcb("/home/jeandet/Documents/PCB/ADC_STAMP/ADC_STAMP.kicad_pcb");
-    pcbDriver.parsePcb("/usr/share/kicad/demos/video/video.kicad_pcb");
-//    pcbDriver.parsePcb("/usr/share/kicad/demos/kit-dev-coldfire-xilinx_5213/kit-dev-coldfire-xilinx_5213.kicad_pcb");
-    for(int i=0;i<pcbDriver.pcbRoot->layers.layers.count();i++)
-    {
-        this->context->addlayer(pcbDriver.pcbRoot->layers.layers.at(i)->name(),pcbDriver.pcbRoot->layers.layers.at(i)->index());
-    }
-    for(int i=0;i<pcbDriver.pcbRoot->modules.count();i++)
-    {
-        this->p_scene->addItem(new PCBModule(pcbDriver.pcbRoot->modules.at(i),this->context));
-    }
-    for(int i=0;i<pcbDriver.pcbRoot->lines.count();i++)
-    {
-        this->p_scene->addItem(new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver.pcbRoot->lines.at(i),this->context));
-    }
-    for(int i=0;i<pcbDriver.pcbRoot->segments.count();i++)
-    {
-        this->p_scene->addItem(new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver.pcbRoot->segments.at(i),this->context));
-    }
-    for(int i=0;i<pcbDriver.pcbRoot->vias.count();i++)
-    {
-        this->p_scene->addItem(new PCBVia(pcbDriver.pcbRoot->vias.at(i),this->context));
-    }
+    this->pcbDriver =NULL;
     connect(this->ui->actionRedraw,SIGNAL(triggered(bool)),this,SLOT(redraw()));
+    connect(this->ui->actionOpen,SIGNAL(triggered(bool)),this,SLOT(openFile()));
 }
 
 MainWindow::~MainWindow()
@@ -74,6 +50,15 @@ void MainWindow::redraw()
     this->p_scene->update();
 }
 
+void MainWindow::openFile()
+{
+    QString file = QFileDialog::getOpenFileName(this,tr("Open kicad PCB file"),
+                                                "",
+                                                tr("PCB file (*.kicad_pcb)"));
+    if(QFile::exists(file))
+        loadFile(file);
+}
+
 void MainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
@@ -83,5 +68,38 @@ void MainWindow::changeEvent(QEvent *e)
         break;
     default:
         break;
+    }
+}
+
+void MainWindow::loadFile(const QString &file)
+{
+    this->p_scene->setSceneRect(0, 0, 500, 200);
+    if(pcbDriver!=NULL)delete pcbDriver;
+    pcbDriver = new QIlib::QIcadPcb();
+    this->context->clear();
+    this->p_scene->clear();
+//    pcbDriver.parsePcb("/opt/kicadTools/test/testFiles/pcb2.kicad_pcb");
+//    pcbDriver.parsePcb("/home/jeandet/Documents/PCB/ADC_STAMP/ADC_STAMP.kicad_pcb");
+    pcbDriver->parsePcb(file);
+//    pcbDriver.parsePcb("/usr/share/kicad/demos/kit-dev-coldfire-xilinx_5213/kit-dev-coldfire-xilinx_5213.kicad_pcb");
+    for(int i=0;i<pcbDriver->pcbRoot->layers.layers.count();i++)
+    {
+        this->context->addlayer(pcbDriver->pcbRoot->layers.layers.at(i)->name(),pcbDriver->pcbRoot->layers.layers.at(i)->index());
+    }
+    for(int i=0;i<pcbDriver->pcbRoot->modules.count();i++)
+    {
+        this->p_scene->addItem(new PCBModule(pcbDriver->pcbRoot->modules.at(i),this->context));
+    }
+    for(int i=0;i<pcbDriver->pcbRoot->lines.count();i++)
+    {
+        this->p_scene->addItem(new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver->pcbRoot->lines.at(i),this->context));
+    }
+    for(int i=0;i<pcbDriver->pcbRoot->segments.count();i++)
+    {
+        this->p_scene->addItem(new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver->pcbRoot->segments.at(i),this->context));
+    }
+    for(int i=0;i<pcbDriver->pcbRoot->vias.count();i++)
+    {
+        this->p_scene->addItem(new PCBVia(pcbDriver->pcbRoot->vias.at(i),this->context));
     }
 }

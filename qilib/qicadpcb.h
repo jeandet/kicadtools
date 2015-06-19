@@ -238,11 +238,15 @@ public:
     const QSizeF& size(){return p_size;}
     const QPointF& pos(){return p_pos;}
     double drill(){return p_drill;}
+    double angle(){return p_angle;}
     padShape shape(){return p_shape;}
+    int padNumber(){return p_padNumber;}
     void setNode(QIlib::AbstractNode* node);
 private:
+    int p_padNumber;
     padShape p_shape;
     double p_drill;
+    double p_angle;
     QSizeF p_size;
     QPointF p_pos;
     QStringList p_layers;

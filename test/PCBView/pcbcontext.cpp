@@ -71,3 +71,9 @@ const QString PCBContext::layer(int number)
     return layers_map.key(number);
 }
 
+void PCBContext::clear()
+{
+    this->layers_colors.clear();
+    this->layers_map.clear();
+}
+

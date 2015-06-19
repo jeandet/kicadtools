@@ -36,6 +36,7 @@ public:
     const QColor& layerColor(const QString& name);
     const QColor& layerColor(int number);
     const QString layer(int number);
+    void clear();
 signals:
 
 public slots:

@@ -42,9 +42,11 @@ void PCBRectPad::init( QPointF offset)
     offset-=QPointF(this->padNode->size().width()/2,this->padNode->size().height()/2);
     if(this->padNode->shape()==QIlib::QIcadPcbPad::rectangle)
     {
+        QRectF rec(this->padNode->pos()+offset,this->padNode->size());
         for(int i=0;i<this->padNode->layers().count();i++)
         {
             QGraphicsRectItem* rect = new QGraphicsRectItem();
+            rect->setTransformOriginPoint(rec.center());
             QPen pen = rect->pen();
             pen.setWidthF(0.01);
             rect->setPen(pen);
@@ -52,11 +54,17 @@ void PCBRectPad::init( QPointF offset)
             brush.setStyle(Qt::SolidPattern);
             brush.setColor(context->layerColor(this->padNode->layers().at(i)));
             rect->setBrush(brush);
-            QRectF rec(this->padNode->pos()+offset,this->padNode->size());
             rect->setRect(rec);
             rect->setZValue(-context->layer(padNode->layers().at(i)));
+            rect->setRotation(padNode->angle());
             this->addToGroup(rect);
         }
+        QGraphicsTextItem* text=new QGraphicsTextItem(QString::number(padNode->padNumber()));
+        text->setPos(rec.center());
+        text->setScale(0.01);
+        text->setZValue(1);
+        this->addToGroup(text);
+
     }
     if(this->padNode->shape()==QIlib::QIcadPcbPad::circle)
     {

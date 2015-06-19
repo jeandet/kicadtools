@@ -37,26 +37,29 @@ PCBVia::PCBVia(QIlib::QIcadPcbVia *viaNode, QPointF offset, PCBContext *context)
 
 void PCBVia::init(QPointF offset)
 {
+    this->path.addEllipse(this->viaNode->pos(),this->viaNode->size().width()/2,this->viaNode->size().height()/2);
+    double thickness = (this->viaNode->size().width()-this->viaNode->drill())/2;
+    this->path.addEllipse(this->viaNode->pos(),(this->viaNode->size().width()/2)-thickness,(this->viaNode->size().height()/2)-thickness);
     this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     this->setFlags(ItemIsMovable|ItemIsSelectable|ItemIsFocusable);
     offset-=QPointF(this->viaNode->size().width()/2,this->viaNode->size().height()/2);
 
     for(int i=0;i<this->viaNode->layers().count();i++)
     {
-        QGraphicsEllipseItem* ellipse = new QGraphicsEllipseItem();
-        QPen pen = ellipse->pen();
-        double thickness = (this->viaNode->size().width()-this->viaNode->drill())/2;
-        pen.setWidthF(thickness);
+        QGraphicsPathItem* pathitem = new QGraphicsPathItem();
+        QPen pen = pathitem->pen();
+        pen.setWidthF(0.01);
 
-        ellipse->setPen(pen);
-//        QBrush brush = ellipse->brush();
-//        brush.setStyle(Qt::SolidPattern);
-//        brush.setColor(context->layerColor(this->viaNode->layers().at(i)));
-//        ellipse->setBrush(brush);
-        QRectF rec(this->viaNode->pos()+offset,QSizeF(this->viaNode->size().width()-thickness,this->viaNode->size().width()-thickness));
-        ellipse->setRect(rec);
-        ellipse->setZValue(-context->layer(viaNode->layers().at(i)));
-        this->addToGroup(ellipse);
+        pathitem->setPen(pen);
+        QBrush brush = pathitem->brush();
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(context->layerColor(this->viaNode->layers().at(i)));
+        pathitem->setBrush(brush);
+//        QRectF rec(this->viaNode->pos()+offset,QSizeF(this->viaNode->size().width()-thickness,this->viaNode->size().width()-thickness));
+//        pathitem->setRect(rec);
+        pathitem->setZValue(-context->layer(viaNode->layers().at(i)));
+        pathitem->setPath(path);
+        this->addToGroup(pathitem);
     }
 
     setOpacity(0.6);
