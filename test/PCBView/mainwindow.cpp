@@ -24,6 +24,7 @@
 #include "pcbmodule.h"
 #include "pcbline.h"
 #include "pcbvia.h"
+#include "pcbzone.h"
 #include <QFileDialog>
 
 
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->p_scene = new QGraphicsScene();
+//    this->p_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     this->context = new PCBContext();
     this->ui->graphicsView->setScene(this->p_scene);
     this->pcbDriver =NULL;
@@ -78,10 +80,7 @@ void MainWindow::loadFile(const QString &file)
     pcbDriver = new QIlib::QIcadPcb();
     this->context->clear();
     this->p_scene->clear();
-//    pcbDriver.parsePcb("/opt/kicadTools/test/testFiles/pcb2.kicad_pcb");
-//    pcbDriver.parsePcb("/home/jeandet/Documents/PCB/ADC_STAMP/ADC_STAMP.kicad_pcb");
     pcbDriver->parsePcb(file);
-//    pcbDriver.parsePcb("/usr/share/kicad/demos/kit-dev-coldfire-xilinx_5213/kit-dev-coldfire-xilinx_5213.kicad_pcb");
     for(int i=0;i<pcbDriver->pcbRoot->layers.layers.count();i++)
     {
         this->context->addlayer(pcbDriver->pcbRoot->layers.layers.at(i)->name(),pcbDriver->pcbRoot->layers.layers.at(i)->index());
@@ -101,5 +100,9 @@ void MainWindow::loadFile(const QString &file)
     for(int i=0;i<pcbDriver->pcbRoot->vias.count();i++)
     {
         this->p_scene->addItem(new PCBVia(pcbDriver->pcbRoot->vias.at(i),this->context));
+    }
+    for(int i=0;i<pcbDriver->pcbRoot->zones.count();i++)
+    {
+        this->p_scene->addItem(new PCBZone(pcbDriver->pcbRoot->zones.at(i),this->context));
     }
 }

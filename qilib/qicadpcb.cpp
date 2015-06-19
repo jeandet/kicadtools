@@ -1120,9 +1120,117 @@ void QIlib::QIcadPcbZone::setNode(QIlib::AbstractNode *node)
     if(node->name==QIlib::Lexique::zone_c)
     {
         this->p_node = node;
+        for(int i=0;i<node->nodes.count();i++)
+        {
+            if(node->nodes.at(i)->name==QIlib::Lexique::polygon_c)
+            {
+                this->polygon.setNode(node->nodes.at(i));
+            }
+            if(node->nodes.at(i)->name==QIlib::Lexique::filled_polygon_c)
+            {
+                this->filledPolygon.setNode(node->nodes.at(i));
+            }
+            if(node->nodes.at(i)->name==QIlib::Lexique::layer_c)
+            {
+                this->layer.setNode(node->nodes.at(i));
+            }
+        }
     }
 }
 
+
+QIlib::QIcadPcbPolygonPoint::QIcadPcbPolygonPoint(QIlib::AbstractNode *node)
+    :QIcadAbstractNodeWrapper(node)
+{
+    this->p_pos.setX(0.0);
+    this->p_pos.setY(0.0);
+    this->setNode(node);
+}
+
+void QIlib::QIcadPcbPolygonPoint::setNode(QIlib::AbstractNode *node)
+{
+    if(node->name==QIlib::Lexique::xy_c)
+    {
+        this->p_node = node;
+        this->p_pos = nodeTo2DCoords(node);
+    }
+}
+
+
+QIlib::QIcadPcbPolygon::QIcadPcbPolygon(QIlib::AbstractNode *node)
+    :QIcadAbstractNodeWrapper(node)
+{
+    this->setNode(node);
+}
+
+void QIlib::QIcadPcbPolygon::setNode(QIlib::AbstractNode *node)
+{
+    if(node->name==QIlib::Lexique::polygon_c)
+    {
+        this->p_node = node;
+        this->p_filled = false;
+        for(int i=0;i<node->nodes.count();i++)
+        {
+            if(node->nodes.at(i)->name==QIlib::Lexique::pts_c)
+            {
+                this->points.setNode(node->nodes.at(i));
+            }
+        }
+    }
+    if(node->name==QIlib::Lexique::filled_polygon_c)
+    {
+        this->p_node = node;
+        this->p_filled = true;
+        for(int i=0;i<node->nodes.count();i++)
+        {
+            if(node->nodes.at(i)->name==QIlib::Lexique::pts_c)
+            {
+                this->points.setNode(node->nodes.at(i));
+            }
+        }
+    }
+}
+
+QIlib::QIcadPcbPolygonPoints::QIcadPcbPolygonPoints(QIlib::AbstractNode *node)
+    :QIcadAbstractNodeWrapper(node)
+{
+    this->setNode(node);
+}
+
+void QIlib::QIcadPcbPolygonPoints::setNode(QIlib::AbstractNode *node)
+{
+    this->clrPoints();
+    if(node->name==QIlib::Lexique::pts_c)
+    {
+        this->p_node = node;
+        for(int i=0;i<node->nodes.count();i++)
+        {
+            if(node->nodes.at(i)->name==QIlib::Lexique::xy_c)
+            {
+                this->apendPoint(node->nodes.at(i));
+            }
+        }
+    }
+}
+
+void QIlib::QIcadPcbPolygonPoints::clrPoints()
+{
+    while(points.count())
+    {
+        QIcadPcbPolygonPoint* point;
+        point = points.last();
+        points.removeLast();
+        delete point;
+    }
+}
+
+void QIlib::QIcadPcbPolygonPoints::apendPoint(QIlib::AbstractNode *node)
+{
+    if(node->name==QIlib::Lexique::xy_c)
+    {
+        this->points.append(new QIcadPcbPolygonPoint(node));
+    }
+}
 
 const QPointF QIlib::nodeTo2DCoords(QIlib::AbstractNode *node)
 {
@@ -1193,3 +1301,8 @@ const QSizeF QIlib::nodeTo2DSize(QIlib::AbstractNode *node)
     }
     return size;
 }
+
+
+
+
+

@@ -37,11 +37,11 @@ PCBVia::PCBVia(QIlib::QIcadPcbVia *viaNode, QPointF offset, PCBContext *context)
 
 void PCBVia::init(QPointF offset)
 {
+    this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    this->setFlags(ItemIsMovable|ItemIsSelectable|ItemIsFocusable);
     this->path.addEllipse(this->viaNode->pos(),this->viaNode->size().width()/2,this->viaNode->size().height()/2);
     double thickness = (this->viaNode->size().width()-this->viaNode->drill())/2;
     this->path.addEllipse(this->viaNode->pos(),(this->viaNode->size().width()/2)-thickness,(this->viaNode->size().height()/2)-thickness);
-    this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    this->setFlags(ItemIsMovable|ItemIsSelectable|ItemIsFocusable);
     offset-=QPointF(this->viaNode->size().width()/2,this->viaNode->size().height()/2);
 
     for(int i=0;i<this->viaNode->layers().count();i++)

@@ -19,10 +19,10 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "pcbrectpad.h"
+#include "pcbpad.h"
 #include <QPen>
 
-PCBRectPad::PCBRectPad(QIlib::QIcadPcbPad *padNode, PCBContext *context)
+PCBPad::PCBPad(QIlib::QIcadPcbPad *padNode, PCBContext *context)
     :QGraphicsItemGroup(),padNode(padNode),context(context)
 {
     this->init(QPointF(0.0,0.0));
@@ -30,13 +30,13 @@ PCBRectPad::PCBRectPad(QIlib::QIcadPcbPad *padNode, PCBContext *context)
 
 
 
-PCBRectPad::PCBRectPad(QIlib::QIcadPcbPad *padNode, QPointF offset, PCBContext *context)
+PCBPad::PCBPad(QIlib::QIcadPcbPad *padNode, QPointF offset, PCBContext *context)
     :QGraphicsItemGroup(),padNode(padNode),context(context)
 {
     this->init(offset);
 }
 
-void PCBRectPad::init( QPointF offset)
+void PCBPad::init( QPointF offset)
 {
     this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     offset-=QPointF(this->padNode->size().width()/2,this->padNode->size().height()/2);

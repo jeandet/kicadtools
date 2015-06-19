@@ -19,24 +19,44 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "pcbmodule.h"
-#include "pcbline.h"
-#include "pcbpad.h"
+#include "pcbzone.h"
+#include <QPen>
+#include <QPixmapCache>
 
-PCBModule::PCBModule(QIlib::QIcadPcbModule *moduleNode, PCBContext *context)
-    :QGraphicsItemGroup(),context(context)
+PCBZone::PCBZone(QIlib::QIcadPcbZone *zoneNode, PCBContext *context)
+    :QGraphicsItemGroup(),zoneNode(zoneNode),context(context)
 {
-    this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    this->setFlags(ItemIsMovable|ItemIsSelectable|ItemIsFocusable);
-    this->setPos(moduleNode->pos());
-    for(int i=0;i<moduleNode->fp_lines.count();i++)
-    {
-        this->addToGroup(new PCBLine((QIlib::QIcadAbstractPcbLine*)moduleNode->fp_lines.at(i),moduleNode->pos(),context));
-    }
-    for(int i=0;i<moduleNode->pads.count();i++)
-    {
-        this->addToGroup(new PCBPad((QIlib::QIcadPcbPad*)moduleNode->pads.at(i),moduleNode->pos(),context));
-    }
-    this->setRotation(moduleNode->angle());
+    this->init();
 }
 
+void PCBZone::init()
+{
+    this->setFlags(ItemIsMovable|ItemIsSelectable|ItemIsFocusable);
+    QPolygonF poly;
+    for(int i=0;i<this->zoneNode->filledPolygon.points.points.count();i++)
+    {
+        poly.append(this->zoneNode->filledPolygon.points.points.at(i)->pos());
+    }
+    QGraphicsPixmapItem* test=new QGraphicsPixmapItem();
+    QPixmap pix;
+    QPainter painter;
+    QGraphicsPolygonItem* polygonItem = new QGraphicsPolygonItem();
+    QPen pen = polygonItem->pen();
+    pen.setWidthF(0.01);
+
+    polygonItem->setPen(pen);
+    QBrush brush = polygonItem->brush();
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(context->layerColor(this->zoneNode->layer.value()));
+    polygonItem->setBrush(brush);
+    polygonItem->setZValue(-context->layer(this->zoneNode->layer.value()));
+    polygonItem->setPolygon(poly);
+    polygonItem->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+//    test->setPixmap(polygonItem->);
+    //voir doc/qt/...
+//    polygonItem->paint();
+    this->addToGroup(polygonItem);
+
+    this->setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    setOpacity(0.6);
+}

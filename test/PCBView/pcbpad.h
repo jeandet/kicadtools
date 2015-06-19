@@ -19,37 +19,30 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#ifndef PCBGRAPHICVIEW_H
-#define PCBGRAPHICVIEW_H
+#ifndef PCBPAD_H
+#define PCBPAD_H
 
-#include <QGraphicsView>
 #include <QObject>
 #include <QWidget>
-#include <QKeyEvent>
-#include <QPainter>
-#include <QMap>
-#include <QElapsedTimer>
+#include <QGraphicsRectItem>
+#include <QGraphicsItemGroup>
+#include <pcbcontext.h>
+#include <qicadpcb.h>
 
-class PCBGraphicView : public QGraphicsView
+class PCBPad : public QGraphicsItemGroup
 {
 public:
-    PCBGraphicView(QWidget *parent = 0);
-    void itemMoved();
+    PCBPad(QIlib::QIcadPcbPad* padNode,PCBContext* context);
+    PCBPad(QIlib::QIcadPcbPad* padNode,QPointF offset,PCBContext* context);
 
-public slots:
-    void zoomIn();
-    void zoomOut();
-
-protected:
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void drawBackground(QPainter *painter, const QRectF &rect);
-
-    void scaleView(qreal scaleFactor);
 private:
-    bool ctrl_pressed;
-    bool shift_pressed;
+    void init(QPointF offset);
+    QIlib::QIcadPcbPad* padNode;
+    QString name;
+    QPointF pos;
+    QRectF size;
+    QList<int> layers;
+    PCBContext* context;
 };
 
-#endif // PCBGRAPHICVIEW_H
+#endif // PCBPAD_H

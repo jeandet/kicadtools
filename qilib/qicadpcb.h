@@ -363,11 +363,52 @@ public:
     void setNode(QIlib::AbstractNode* node);
 };
 
+
+class QIcadPcbPolygonPoint : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbPolygonPoint(QIlib::AbstractNode* node);
+    QIcadPcbPolygonPoint(){}
+    void setNode(QIlib::AbstractNode* node);
+    const QPointF& pos(){return p_pos;}
+private:
+    QPointF p_pos;
+};
+
+
+class QIcadPcbPolygonPoints : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbPolygonPoints(QIlib::AbstractNode* node);
+    QIcadPcbPolygonPoints(){}
+    void setNode(QIlib::AbstractNode* node);
+    QList<QIcadPcbPolygonPoint*> points;
+    void clrPoints();
+    void apendPoint(QIlib::AbstractNode* node);
+private:
+    QPointF p_pos;
+};
+
+class QIcadPcbPolygon : public QIcadAbstractNodeWrapper
+{
+public:
+    QIcadPcbPolygon(QIlib::AbstractNode* node);
+    QIcadPcbPolygon(){}
+    QIcadPcbPolygonPoints points;
+    void setNode(QIlib::AbstractNode* node);
+    bool isFilled(){return p_filled;}
+private:
+    bool p_filled;
+};
+
 class QIcadPcbZone : public QIcadAbstractNodeWrapper
 {
 public:
     QIcadPcbZone(QIlib::AbstractNode* node);
     QIcadPcbZone(){}
+    QIcadPcbPolygon polygon;
+    QIcadPcbPolygon filledPolygon;
+    QIcadAbstractNodeWrapper layer;
     void setNode(QIlib::AbstractNode* node);
 };
 

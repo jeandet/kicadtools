@@ -23,11 +23,12 @@
 
 #include <math.h>
 #include <QGLWidget>
+#include <QOpenGLWidget>
+#include <QPixmapCache>
 
 PCBGraphicView::PCBGraphicView(QWidget *parent)
     :QGraphicsView(parent)
 {
-
     this->setRenderHint(QPainter::Antialiasing, true);
     this->setDragMode(QGraphicsView::RubberBandDrag);
     this->setOptimizationFlags(QGraphicsView::DontSavePainterState);
@@ -37,10 +38,10 @@ PCBGraphicView::PCBGraphicView(QWidget *parent)
     this->setTransformationAnchor(AnchorUnderMouse);
     this->scale(qreal(0.8), qreal(0.8));
     this->setRubberBandSelectionMode(Qt::ContainsItemBoundingRect);
-    this->setDragMode(RubberBandDrag);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
+//    this->setViewport(new QOpenGLWidget());
+    QPixmapCache::setCacheLimit(1024*1024*4);
     this->ctrl_pressed = false;
     this->shift_pressed = false;
 }
@@ -82,22 +83,23 @@ void PCBGraphicView::keyReleaseEvent(QKeyEvent *event)
 
 void PCBGraphicView::wheelEvent(QWheelEvent *event)
 {
-
-    if (event->modifiers() & Qt::ControlModifier)
-    {
-        if (event->orientation()== Qt::Vertical)
-            scaleView(pow((double)2, event->delta() / 240.0));
-    }
-    else
-    {
-        if (event->modifiers() & Qt::ShiftModifier)
+        if (event->modifiers() & Qt::ControlModifier)
         {
-            QWheelEvent* tempevent = new QWheelEvent(event->pos(),(event->delta()/10),event->buttons(),event->modifiers(),Qt::Horizontal);
-            QGraphicsView::wheelEvent(tempevent);
+            event->accept();
+            if (event->orientation()== Qt::Vertical)
+                scaleView(pow((double)2, event->delta() / 240.0));
         }
         else
-            QGraphicsView::wheelEvent(event);
-    }
+        {
+            if (event->modifiers() & Qt::ShiftModifier)
+            {
+                event->accept();
+                QWheelEvent* tempevent = new QWheelEvent(event->pos(),(event->delta()/10),event->buttons(),event->modifiers(),Qt::Horizontal);
+                QGraphicsView::wheelEvent(tempevent);
+            }
+            else
+                QGraphicsView::wheelEvent(event);
+        }
 }
 
 

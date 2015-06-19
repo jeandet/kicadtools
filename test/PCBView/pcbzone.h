@@ -19,30 +19,25 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#ifndef PCBRECTPAD_H
-#define PCBRECTPAD_H
-
+#ifndef PCBZONE_H
+#define PCBZONE_H
 #include <QObject>
 #include <QWidget>
 #include <QGraphicsRectItem>
 #include <QGraphicsItemGroup>
 #include <pcbcontext.h>
 #include <qicadpcb.h>
+#include <QPainterPath>
 
-class PCBRectPad : public QGraphicsItemGroup
+class PCBZone: public QGraphicsItemGroup
 {
 public:
-    PCBRectPad(QIlib::QIcadPcbPad* padNode,PCBContext* context);
-    PCBRectPad(QIlib::QIcadPcbPad* padNode,QPointF offset,PCBContext* context);
-
+    PCBZone(QIlib::QIcadPcbZone* zoneNode,PCBContext* context);
 private:
-    void init(QPointF offset);
-    QIlib::QIcadPcbPad* padNode;
-    QString name;
-    QPointF pos;
-    QRectF size;
-    QList<int> layers;
+    void init();
+    QIlib::QIcadPcbZone* zoneNode;
+    int layer;
     PCBContext* context;
 };
 
-#endif // PCBRECTPAD_H
+#endif // PCBZONE_H

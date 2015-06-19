@@ -25,18 +25,20 @@ LIBS += -L../../bin -lQIlib
 SOURCES += main.cpp\
         mainwindow.cpp \
     pcbgraphicview.cpp \
-    pcbrectpad.cpp \
     pcbmodule.cpp \
     pcbline.cpp \
     pcbcontext.cpp \
-    pcbvia.cpp
+    pcbvia.cpp \
+    pcbpad.cpp \
+    pcbzone.cpp
 
 HEADERS  += mainwindow.h \
     pcbgraphicview.h \
-    pcbrectpad.h \
     pcbmodule.h \
     pcbline.h \
     pcbcontext.h \
-    pcbvia.h
+    pcbvia.h \
+    pcbpad.h \
+    pcbzone.h
 
 FORMS    += mainwindow.ui
