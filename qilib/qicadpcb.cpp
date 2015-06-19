@@ -455,7 +455,7 @@ void QIlib::QIcadPcbLine::setNode(QIlib::AbstractNode *node)
 
 
 QIlib::QIcadPcbModule::QIcadPcbModule(QIlib::AbstractNode *node)
-    :QIcadAbstractNodeWrapper(node)
+    :QIcadAbstractNodeWrapper(node),p_angle(0.0)
 {
     this->setNode(node);
 }
@@ -467,7 +467,7 @@ const QPointF &QIlib::QIcadPcbModule::pos()
 
 double QIlib::QIcadPcbModule::angle()
 {
-    return p_angle;
+    return - p_angle;
 }
 
 void QIlib::QIcadPcbModule::setNode(QIlib::AbstractNode *node)
@@ -498,6 +498,7 @@ void QIlib::QIcadPcbModule::setNode(QIlib::AbstractNode *node)
                 if(coords.count()==3)
                 {
                     p_angle = coords.at(2).toDouble();
+                    this->updatePadsAngle();
                 }
             }
             if(node->nodes.at(i)->name==QIlib::Lexique::tags_c)
@@ -547,7 +548,7 @@ void QIlib::QIcadPcbModule::apendPad(QIlib::AbstractNode *node)
 {
     if(node->name==QIlib::Lexique::pad_c)
     {
-        this->pads.append(new QIcadPcbPad(node));
+        this->pads.append(new QIcadPcbPad(node, this->p_angle));
     }
 }
 
@@ -605,6 +606,14 @@ void QIlib::QIcadPcbModule::apendCircle(QIlib::AbstractNode *node)
     if(node->name==QIlib::Lexique::fp_circle_c)
     {
         this->fp_circles.append(new QIcadPcbFPCircle(node));
+    }
+}
+
+void QIlib::QIcadPcbModule::updatePadsAngle()
+{
+    for(int i=0;i<this->pads.count();i++)
+    {
+        this->pads.at(i)->setModuleAngle(this->p_angle);
     }
 }
 
@@ -864,11 +873,13 @@ void QIlib::QIcadPcbVia::setNode(QIlib::AbstractNode *node)
 }
 
 
-QIlib::QIcadPcbPad::QIcadPcbPad(QIlib::AbstractNode *node)
-    :QIcadAbstractNodeWrapper(node)
+QIlib::QIcadPcbPad::QIcadPcbPad(QIlib::AbstractNode *node, double modAngle)
+    :QIcadAbstractNodeWrapper(node),p_Mod_angle(modAngle),p_angle(0.0)
 {
     this->setNode(node);
 }
+
+
 
 void QIlib::QIcadPcbPad::setNode(QIlib::AbstractNode *node)
 {

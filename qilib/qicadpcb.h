@@ -31,7 +31,6 @@
 #include <QRectF>
 
 namespace QIlib{
-
 const QPointF nodeTo2DCoords(QIlib::AbstractNode* node);
 const QSizeF nodeTo2DSize(QIlib::AbstractNode* node);
 double nodeValueToDouble(QIlib::AbstractNode* node,int index=0);
@@ -227,7 +226,7 @@ public:
         rectangle,
         circle
     }padShape;
-    QIcadPcbPad(QIlib::AbstractNode* node);
+    QIcadPcbPad(QIlib::AbstractNode* node,double modAngle=0.0);
     QIcadPcbPad(){}
     QIcadAbstractNodeWrapper at;
     QIcadAbstractNodeWrapper sizeNode;
@@ -238,7 +237,8 @@ public:
     const QSizeF& size(){return p_size;}
     const QPointF& pos(){return p_pos;}
     double drill(){return p_drill;}
-    double angle(){return p_angle;}
+    void setModuleAngle(double modAngle){p_Mod_angle= modAngle;}
+    double angle(){return  - (p_angle - p_Mod_angle);}
     padShape shape(){return p_shape;}
     int padNumber(){return p_padNumber;}
     void setNode(QIlib::AbstractNode* node);
@@ -247,6 +247,9 @@ private:
     padShape p_shape;
     double p_drill;
     double p_angle;
+    // Dirty fix to transform pad angle from
+    // PCB coordinates to Module coordinates
+    double p_Mod_angle;
     QSizeF p_size;
     QPointF p_pos;
     QStringList p_layers;
@@ -306,6 +309,7 @@ public:
     void clrCircles();
     void apendCircle(QIlib::AbstractNode* node);
 private:
+    void updatePadsAngle();
     QPointF p_pos;
     double p_angle;
 };
