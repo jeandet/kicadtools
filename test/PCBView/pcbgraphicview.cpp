@@ -110,8 +110,8 @@ void PCBGraphicView::drawBackground(QPainter *painter, const QRectF &rect)
 
     // Shadow
     QRectF sceneRect = this->sceneRect();
-    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 20, 20, sceneRect.height());
-    QRectF bottomShadow(sceneRect.left() + 20, sceneRect.bottom(), sceneRect.width(), 20);
+    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 2, 2, sceneRect.height());
+    QRectF bottomShadow(sceneRect.left() + 2, sceneRect.bottom(), sceneRect.width(), 2);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))
         painter->fillRect(rightShadow, Qt::darkGray);
     if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))

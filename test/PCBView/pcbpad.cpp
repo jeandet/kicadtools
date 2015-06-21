@@ -60,8 +60,10 @@ void PCBPad::init( QPointF offset)
             this->addToGroup(rect);
         }
         QGraphicsTextItem* text=new QGraphicsTextItem(QString::number(padNode->padNumber()));
-        text->setPos(rec.center());
         text->setScale(0.01);
+        text->setPos(rec.center());
+//        text->setTransformOriginPoint(rec.center());
+//        text->setRotation(padNode->angle());
         text->setZValue(1);
         this->addToGroup(text);
 

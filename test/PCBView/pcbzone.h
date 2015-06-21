@@ -34,7 +34,9 @@ class PCBZone: public QGraphicsItemGroup
 public:
     PCBZone(QIlib::QIcadPcbZone* zoneNode,PCBContext* context);
 private:
-    void init();
+    void initTriangPolypartition();
+    void initQtClipping();
+    QList<QPolygonF> splitPolygons(QPolygonF polygon,int maxPoints);
     QIlib::QIcadPcbZone* zoneNode;
     int layer;
     PCBContext* context;

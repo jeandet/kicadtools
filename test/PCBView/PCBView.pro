@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     pcbcontext.cpp \
     pcbvia.cpp \
     pcbpad.cpp \
-    pcbzone.cpp
+    pcbzone.cpp \
+    polypartition/src/polypartition.cpp
 
 HEADERS  += mainwindow.h \
     pcbgraphicview.h \
@@ -39,6 +40,7 @@ HEADERS  += mainwindow.h \
     pcbcontext.h \
     pcbvia.h \
     pcbpad.h \
-    pcbzone.h
+    pcbzone.h \
+    polypartition/src/polypartition.h
 
 FORMS    += mainwindow.ui
