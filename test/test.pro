@@ -4,7 +4,8 @@ TEMPLATE = subdirs
 CONFIG   += ordered release
 
 SUBDIRS += dumpLispLikeFiles \
-    PCBView
+    PCBView \
+    QtGuiTests
 
 
 

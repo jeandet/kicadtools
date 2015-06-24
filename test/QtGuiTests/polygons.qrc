@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/polygons">
+        <file alias="polygon1.txt">resources/polygon1.txt</file>
+        <file alias="polygon2.txt">resources/polygon2.txt</file>
+        <file alias="polygon3.txt">resources/polygon3.txt</file>
+        <file alias="polygon4.txt">resources/polygon4.txt</file>
+        <file alias="polygon5.txt">resources/polygon5.txt</file>
+        <file alias="polygon6.txt">resources/polygon6.txt</file>
+        <file alias="polygon7.txt">resources/polygon7.txt</file>
+        <file alias="polygon8.txt">resources/polygon8.txt</file>
+        <file alias="polygon9.txt">resources/polygon9.txt</file>
+        <file alias="polygon10.txt">resources/polygon10.txt</file>
+        <file alias="polygon11.txt">resources/polygon11.txt</file>
+        <file alias="polygon12.txt">resources/polygon12.txt</file>
+        <file alias="polygon13.txt">resources/polygon13.txt</file>
+        <file alias="polygon14.txt">resources/polygon14.txt</file>
+        <file alias="polygon15.txt">resources/polygon15.txt</file>
+        <file alias="polygon16.txt">resources/polygon16.txt</file>
+        <file alias="polygon17.txt">resources/polygon17.txt</file>
+        <file alias="polygon18.txt">resources/polygon18.txt</file>
+        <file alias="polygon19.txt">resources/polygon19.txt</file>
+    </qresource>
+</RCC>

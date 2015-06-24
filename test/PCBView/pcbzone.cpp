@@ -23,12 +23,14 @@
 #include <QPen>
 #include <QPixmapCache>
 #include "polypartition/src/polypartition.h"
+#include "polygonssplit.h"
 
 
 PCBZone::PCBZone(QIlib::QIcadPcbZone *zoneNode, PCBContext *context)
     :QGraphicsItemGroup(),zoneNode(zoneNode),context(context)
 {
     this->initQtClipping();
+//    this->initTriangPolypartition();
 }
 
 void PCBZone::initTriangPolypartition()
@@ -43,7 +45,7 @@ void PCBZone::initTriangPolypartition()
         test[i].x =this->zoneNode->filledPolygon.points.points.at(i)->pos().x();
         test[i].y =this->zoneNode->filledPolygon.points.points.at(i)->pos().y();
     }
-    pp.Triangulate_OPT(&test,&triangles);
+    pp.ConvexPartition_HM(&test,&triangles);
     for(std::list<TPPLPoly>::iterator iter = triangles.begin();iter != triangles.end(); iter++)
     {
         QPolygonF poly;
@@ -83,12 +85,12 @@ void PCBZone::initQtClipping()
         p.setY(this->zoneNode->filledPolygon.points.points.at(i)->pos().y());
         poly.append(p);
     }
-    QList<QPolygonF> clippedPolygons = splitPolygons(poly,100);
+    QList<QPolygonF> clippedPolygons = PolygonsSplit::splitPolygons(poly,100,5);
     for(int i=0;i<clippedPolygons.count();i++)
     {
         QGraphicsPolygonItem* polygonItem = new QGraphicsPolygonItem();
 //        QPen pen = polygonItem->pen();
-//        pen.setWidthF(0.01);
+//        pen.setWidthF(0.05);
 
         polygonItem->setPen(Qt::NoPen);
 //        polygonItem->setPen(pen);

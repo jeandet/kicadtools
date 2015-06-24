@@ -19,29 +19,14 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "mainwindow.h"
-#include <QApplication>
-#include <omp.h>
-#include <QThread>
+#ifndef SAMPLEPOLYGONS_H
+#define SAMPLEPOLYGONS_H
+#include <QList>
+#include <QVector>
+#include <QPointF>
+#include <QPolygonF>
 
+QPolygonF loadFromFile(const QString& fileName);
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    QByteArray OMP_NUM_THREADS = qgetenv("OMP_NUM_THREADS");
-    int OMP_THREADS;
-    if (0==OMP_NUM_THREADS.count())
-      {
-        omp_set_num_threads(QThread::idealThreadCount());
-  //      omp_set_num_threads(2);
-        OMP_THREADS = QThread::idealThreadCount();
-      }
-    else
-      {
-        OMP_THREADS = QString(OMP_NUM_THREADS).toInt();
-      }
-    MainWindow w;
-    w.show();
+#endif // SAMPLEPOLYGONS_H
 
-    return a.exec();
-}

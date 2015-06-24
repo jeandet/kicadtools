@@ -21,9 +21,8 @@
 ----------------------------------------------------------------------------*/
 #include "mainwindow.h"
 #include <QApplication>
-#include <omp.h>
 #include <QThread>
-
+#include <omp.h>
 
 int main(int argc, char *argv[])
 {

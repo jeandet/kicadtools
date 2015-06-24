@@ -19,6 +19,9 @@ TEMPLATE = lib
 
 LIBS += -lfl
 
+QMAKE_CXXFLAGS += -fopenmp
+QMAKE_LFLAGS += -fopenmp
+
 MOC_DIR      = moc
 RCC_DIR      = resources
 OBJECTS_DIR  = obj
@@ -53,7 +56,8 @@ SOURCES += \
     parsers/lispLike_driver.cpp \
     parsers/lispLike_scanner.cpp \
     qicadpcb.cpp \
-    qicadlisplikelexique.cpp
+    qicadlisplikelexique.cpp \
+    polygonssplit.cpp
 
 
 HEADERS  += \
@@ -61,7 +65,8 @@ HEADERS  += \
     parsers/lispLike_driver.h \
     parsers/lispLike_scanner.h \
     qicadpcb.h \
-    qicadlisplikelexique.h
+    qicadlisplikelexique.h \
+    polygonssplit.h
 
 OTHER_FILES += qilib.prf
 

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>626</width>
+    <height>548</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="GraphicView" name="graphicsView"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QCustomPlot" name="plot" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Page</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QCustomPlot" name="plot2" native="true"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>626</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuTests">
+    <property name="title">
+     <string>tests</string>
+    </property>
+    <addaction name="actionTest1"/>
+    <addaction name="actionRunTestTimeVsPolygonsCount"/>
+    <addaction name="actionT_imeVsPolygonsCount_Clipped"/>
+    <addaction name="actionT_imeVsPolygonsCountVsClipped"/>
+   </widget>
+   <addaction name="menuTests"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionTest1">
+   <property name="text">
+    <string>&amp;test1</string>
+   </property>
+  </action>
+  <action name="actionRunTestTimeVsPolygonsCount">
+   <property name="text">
+    <string>T&amp;imeVsPolygonsCount</string>
+   </property>
+  </action>
+  <action name="actionT_imeVsPolygonsCount_Clipped">
+   <property name="text">
+    <string>TimeVsPolygonsCount &amp;Clipped</string>
+   </property>
+  </action>
+  <action name="actionT_imeVsPolygonsCountVsClipped">
+   <property name="text">
+    <string>T&amp;imeVsPolygonsCountVsClipped</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">graphicview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header location="global">qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

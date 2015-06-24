@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->p_scene = new QGraphicsScene();
-//    this->p_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    //    this->p_scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     this->context = new PCBContext();
     this->ui->graphicsView->setScene(this->p_scene);
     this->pcbDriver =NULL;
@@ -85,24 +85,39 @@ void MainWindow::loadFile(const QString &file)
     {
         this->context->addlayer(pcbDriver->pcbRoot->layers.layers.at(i)->name(),pcbDriver->pcbRoot->layers.layers.at(i)->index());
     }
+#pragma omp parallel for
     for(int i=0;i<pcbDriver->pcbRoot->modules.count();i++)
     {
-        this->p_scene->addItem(new PCBModule(pcbDriver->pcbRoot->modules.at(i),this->context));
+        PCBModule* module = new PCBModule(pcbDriver->pcbRoot->modules.at(i),this->context);
+#pragma omp critical
+        this->p_scene->addItem(module);
     }
+#pragma omp parallel for
     for(int i=0;i<pcbDriver->pcbRoot->lines.count();i++)
     {
-        this->p_scene->addItem(new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver->pcbRoot->lines.at(i),this->context));
+        PCBLine* line=new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver->pcbRoot->lines.at(i),this->context);
+#pragma omp critical
+        this->p_scene->addItem(line);
     }
+#pragma omp parallel for
     for(int i=0;i<pcbDriver->pcbRoot->segments.count();i++)
     {
-        this->p_scene->addItem(new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver->pcbRoot->segments.at(i),this->context));
+        PCBLine* line=new PCBLine((QIlib::QIcadAbstractPcbLine*)pcbDriver->pcbRoot->segments.at(i),this->context);
+#pragma omp critical
+        this->p_scene->addItem(line);
     }
+#pragma omp parallel for
     for(int i=0;i<pcbDriver->pcbRoot->vias.count();i++)
     {
-        this->p_scene->addItem(new PCBVia(pcbDriver->pcbRoot->vias.at(i),this->context));
+        PCBVia* via =new PCBVia(pcbDriver->pcbRoot->vias.at(i),this->context);
+#pragma omp critical
+        this->p_scene->addItem(via);
     }
+#pragma omp parallel for
     for(int i=0;i<pcbDriver->pcbRoot->zones.count();i++)
     {
-        this->p_scene->addItem(new PCBZone(pcbDriver->pcbRoot->zones.at(i),this->context));
+        PCBZone* zone=new PCBZone(pcbDriver->pcbRoot->zones.at(i),this->context);
+#pragma omp critical
+        this->p_scene->addItem(zone);
     }
 }

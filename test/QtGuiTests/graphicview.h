@@ -19,29 +19,37 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "mainwindow.h"
-#include <QApplication>
-#include <omp.h>
-#include <QThread>
+#ifndef PCBGRAPHICVIEW_H
+#define PCBGRAPHICVIEW_H
 
+#include <QGraphicsView>
+#include <QObject>
+#include <QWidget>
+#include <QKeyEvent>
+#include <QPainter>
+#include <QMap>
+#include <QElapsedTimer>
 
-int main(int argc, char *argv[])
+class GraphicView : public QGraphicsView
 {
-    QApplication a(argc, argv);
-    QByteArray OMP_NUM_THREADS = qgetenv("OMP_NUM_THREADS");
-    int OMP_THREADS;
-    if (0==OMP_NUM_THREADS.count())
-      {
-        omp_set_num_threads(QThread::idealThreadCount());
-  //      omp_set_num_threads(2);
-        OMP_THREADS = QThread::idealThreadCount();
-      }
-    else
-      {
-        OMP_THREADS = QString(OMP_NUM_THREADS).toInt();
-      }
-    MainWindow w;
-    w.show();
+public:
+    GraphicView(QWidget *parent = 0);
+    void itemMoved();
 
-    return a.exec();
-}
+public slots:
+    void zoomIn();
+    void zoomOut();
+    void scaleView(qreal scaleFactor);
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void drawBackground(QPainter *painter, const QRectF &rect);
+
+private:
+    bool ctrl_pressed;
+    bool shift_pressed;
+};
+
+#endif // PCBGRAPHICVIEW_H

@@ -17,6 +17,9 @@ RCC_DIR      = resources
 OBJECTS_DIR  = obj
 DESTDIR      = ../../bin
 
+QMAKE_CXXFLAGS += -fopenmp
+QMAKE_LFLAGS += -fopenmp
+
 INCLUDEPATH += $$top_builddir/../../qilib \
                     $$top_srcdir/../../qilib
 

@@ -19,29 +19,44 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "mainwindow.h"
-#include <QApplication>
-#include <omp.h>
-#include <QThread>
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
+#include <QMainWindow>
+#include <QGraphicsScene>
+#include <qcustomplot.h>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    QByteArray OMP_NUM_THREADS = qgetenv("OMP_NUM_THREADS");
-    int OMP_THREADS;
-    if (0==OMP_NUM_THREADS.count())
-      {
-        omp_set_num_threads(QThread::idealThreadCount());
-  //      omp_set_num_threads(2);
-        OMP_THREADS = QThread::idealThreadCount();
-      }
-    else
-      {
-        OMP_THREADS = QString(OMP_NUM_THREADS).toInt();
-      }
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+namespace Ui {
+class MainWindow;
 }
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+public slots:
+    void runTest();
+    void runTestTimeVsEdgeCount();
+    void runTestTimeVsPolygonsCountVsclipped();
+    void runTestTimeVsPolygonsCount(bool clipped=false);
+    void runTestTimeVsPolygonsCount_clipped();
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    int getEdgeCount(const QString& fileName);
+    void clearGraphs();
+    QCPDataMap *runTestTimeVsPolygonsCount(const QString& file, double opacity=1.0, bool partitionnePoly=false, QColor color=Qt::blue);
+    void forceSceneRepaint();
+    double drawingTime();
+    QPolygonF buildPolygon(int edgesCount);
+    void addPoly(int polyCount,int edgesCount,bool uniquePolygon=true);
+    void addPoly(const QPolygonF& polygon,int polyCount);
+    Ui::MainWindow *ui;
+    QGraphicsScene* p_scene;
+};
+
+#endif // MAINWINDOW_H

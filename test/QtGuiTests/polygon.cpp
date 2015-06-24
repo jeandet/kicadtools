@@ -19,29 +19,26 @@
 /*--                  Author : Alexis Jeandet
 --                     Mail : alexis.jeandet@member.fsf.org
 ----------------------------------------------------------------------------*/
-#include "mainwindow.h"
-#include <QApplication>
-#include <omp.h>
-#include <QThread>
+#include "polygon.h"
+#include <QBrush>
+#include <QPen>
 
-
-int main(int argc, char *argv[])
+TestPolygon::TestPolygon(QRectF maxRect, int Npoints)
 {
-    QApplication a(argc, argv);
-    QByteArray OMP_NUM_THREADS = qgetenv("OMP_NUM_THREADS");
-    int OMP_THREADS;
-    if (0==OMP_NUM_THREADS.count())
-      {
-        omp_set_num_threads(QThread::idealThreadCount());
-  //      omp_set_num_threads(2);
-        OMP_THREADS = QThread::idealThreadCount();
-      }
-    else
-      {
-        OMP_THREADS = QString(OMP_NUM_THREADS).toInt();
-      }
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+    QPolygonF poly;
+    for(int i=0;i<Npoints;i++)
+    {
+        QPointF point =QPointF(((double)rand())*(maxRect.width()/10)/INT_MAX,((double)rand())*(maxRect.height()/10)/INT_MAX);
+        point +=QPointF(((double)rand())*(maxRect.width()/4)/INT_MAX,((double)rand())*(maxRect.height()/4)/INT_MAX);
+        poly.append(point);
+    }
+    QPen pen = this->pen();
+    pen.setWidthF(0.05);
+    this->setPen(pen);
+    QBrush brush = this->brush();
+    brush.setColor(Qt::blue);
+    brush.setStyle(Qt::SolidPattern);
+    this->setBrush(brush);
+    this->setPolygon(poly);
 }
+
